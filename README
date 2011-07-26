@@ -1,0 +1,18 @@
+The Simple Open Java Cryptographic Library (SOJaC)
+Author: helios2k6 
+
+1. Introduction
+The Simple Open Java Cryptographic Library (SOJaC) is a minimalistic, pure-Java cryptographic library that works on top of the Java Cryptograhpic Extention (JCE). The biggest difference between this library and other cryptographic libraries is that it's able to encrypt anything that's serializable. 
+
+2. Encryption Made Simple
+Encryption is merely the mapping of data from one group to another. Using the JCE requires intimate knowledge of its design and inner workings. In fact, even with cryptographic knowledge, using the JCE is a nightmare. There are countless anti-patterns, needless redirections, and fragile functions that require you to memorize String-based constants that are documented in Appendix A of the JCE.
+
+I wish to change ALL OF THAT. Instead of providing a billion different factory objects that require you to know String constants, conflicting object types, non-intuitive names, and completely worthless tools, the SOJaC provides you with 4 things:
+	1. Two static methods
+		a. "Encrypt()"
+		b. "Decrypt()"
+	2. Enums that specify the encryption method
+	3. Enums that specify the block mode
+	3. An interface that you can implement optionally. You would only do this if you don't want to use Java's serialization method
+
+That's it. No digging through examples. No trial and error. No need to worry about String constants. No retarded, unintuitive factory objects that do certain things but not others, even though it would seem natural for them to do said things. No stupid workarounds. Just pure, unbastardized encryption.
