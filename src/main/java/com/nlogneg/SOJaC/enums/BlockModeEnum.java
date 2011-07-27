@@ -1,11 +1,12 @@
 package com.nlogneg.SOJaC.enums;
 
 public enum BlockModeEnum {
-	CBC ("CBC"),
-	CFB ("CFB"),
-	ECB ("ECB"),
-	OFB ("OFB"),
-	PCBC ("PCBC");
+	NONE ("None"), //No IV
+	CBC ("CBC"), //IV
+	CFB ("CFB"), //IV
+	ECB ("ECB"), //NO IV
+	OFB ("OFB"), //IV
+	PCBC ("PCBC"); //IV
 	
 	private String name;
 	
@@ -19,5 +20,12 @@ public enum BlockModeEnum {
 	
 	public static BlockModeEnum getDefault(){
 		return CBC;
+	}
+	
+	public static boolean requiresIV(BlockModeEnum mode){
+		if(mode.equals(ECB) || mode.equals(NONE)){
+			return false;
+		}
+		return true;
 	}
 }

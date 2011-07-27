@@ -4,11 +4,13 @@ import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.nlogneg.SOJaC.enums.BlockModeEnum;
@@ -27,13 +29,24 @@ public class AES_Engine implements EncryptionEngine{
 			
 			byte[] keyDigest = dig.digest(key.array());
 			
+			Cipher cipher = Cipher.getInstance(CipherEnum.AES.toString() + "/" + 
+			BlockModeEnum.getDefault().toString() + "/" + DEFAULT_PADDING);
+			
 			SecretKeySpec keySpec = new SecretKeySpec(keyDigest, CipherEnum.AES.toString());
-			Cipher cipher = Cipher.getInstance(CipherEnum.AES.toString());
+			
+			if(BlockModeEnum.requiresIV(blockMode)){
+				SecureRandom random = SecureRandom.getInstance(DEFAULT_RANDOM);
+				byte[] IV_seed = new byte[16];
+				random.nextBytes(IV_seed);
+				IvParameterSpec IV = new IvParameterSpec(IV_seed);
+				
+			}else{
+				
+			}
 			
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 			
 			byte[] ciphertext = cipher.doFinal(message.array());
-			
 			
 			return ByteBuffer.wrap(ciphertext);
 		} catch (NoSuchAlgorithmException e) {
