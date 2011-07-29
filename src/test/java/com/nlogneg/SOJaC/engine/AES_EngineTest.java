@@ -1,6 +1,11 @@
 package com.nlogneg.SOJaC.engine;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Random;
+
 import junit.framework.TestCase;
+
+import org.apache.commons.codec.binary.Base64;
 
 public class AES_EngineTest extends TestCase{
 	
@@ -8,10 +13,19 @@ public class AES_EngineTest extends TestCase{
 	
 	private static final String MESSAGE_SHORT = "SOJaC";
 	
-	private static final String MESSAGE_LONG = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
-	
 	private static String generateLongString(){
+		Random random = new Random();
+		byte[] randomByteArray = new byte[128];
+		random.nextBytes(randomByteArray);
 		
+		Base64 encoder = new Base64();
+		
+		try {
+			String randomString = new String(encoder.encode(randomByteArray), "UTF-8");
+			return randomString;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
