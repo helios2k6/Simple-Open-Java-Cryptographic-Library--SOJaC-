@@ -22,7 +22,7 @@ public class DES_Engine implements EncryptionEngine{
 	}
 
 	@Override
-	public ByteBuffer decrypt(EncryptedResult cipherText) {
+	public ByteBuffer decrypt(EncryptedResult cipherText, ByteBuffer key) {
 		// TODO Auto-generated method stub
 		return null;
 	}

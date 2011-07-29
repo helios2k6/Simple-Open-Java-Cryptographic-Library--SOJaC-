@@ -11,5 +11,5 @@ public interface EncryptionEngine {
 	public static final String DEFAULT_RANDOM = "SHA1PRNG";
 	
 	public EncryptedResult encrypt(ByteBuffer message, ByteBuffer key, BlockModeEnum blockMode);
-	public ByteBuffer decrypt(EncryptedResult cipherText);
+	public ByteBuffer decrypt(EncryptedResult cipherText, ByteBuffer key);
 }
