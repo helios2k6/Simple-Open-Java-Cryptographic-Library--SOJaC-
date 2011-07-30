@@ -1,7 +1,6 @@
 package com.nlogneg.SOJaC.enums;
 
 public enum BlockModeEnum {
-	NONE ("None"), //No IV
 	CBC ("CBC"), //IV
 	CFB ("CFB"), //IV
 	ECB ("ECB"), //NO IV
@@ -23,7 +22,7 @@ public enum BlockModeEnum {
 	}
 	
 	public static boolean requiresIV(BlockModeEnum mode){
-		if(mode.equals(ECB) || mode.equals(NONE)){
+		if(mode.equals(ECB)){
 			return false;
 		}
 		return true;

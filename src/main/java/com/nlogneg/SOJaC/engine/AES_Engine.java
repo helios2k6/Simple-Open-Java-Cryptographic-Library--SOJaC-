@@ -53,7 +53,7 @@ public class AES_Engine implements EncryptionEngine{
 
 			if(BlockModeEnum.requiresIV(blockMode)){
 				SecureRandom random = SecureRandom.getInstance(CipherUtils.DEFAULT_SECURE_RANDOM);
-				byte[] IV_seed = new byte[keyAsBytes.length];
+				byte[] IV_seed = new byte[16];
 				random.nextBytes(IV_seed);
 				IvParameterSpec IV = new IvParameterSpec(IV_seed);
 
