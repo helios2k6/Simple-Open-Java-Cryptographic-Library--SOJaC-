@@ -22,6 +22,8 @@ import com.nlogneg.SOJaC.objects.EncryptedResult;
 
 public class AES_Engine implements EncryptionEngine{
 
+	private static int[] KEY_SIZES = {128, 192, 256};
+	
 	private AES_Engine() {
 
 	}
@@ -39,13 +41,28 @@ public class AES_Engine implements EncryptionEngine{
 			BlockModeEnum blockMode) {
 
 		try {
-			int keySize = CipherUtils.getLargestKeySize(CipherEnum.AES.toString());
-
-			MessageDigestEnum digestMethod = MessageDigestEnum.getStrongestDigest(keySize);
+			int maxKeySize = CipherUtils.getLargestKeySize(CipherEnum.AES.toString());
+			
+			int keySize = 0;
+			
+			MessageDigestEnum digestMethod = MessageDigestEnum.SHA256;
 
 			MessageDigest digest = MessageDigest.getInstance(digestMethod.toString());
 
-			byte[] keyAsBytes = digest.digest(key.array());
+			for(int i : KEY_SIZES){
+				if(maxKeySize > i){
+					keySize = i;
+				}
+			}
+			
+			byte[] preKey = digest.digest(key.array());
+			
+			byte[] keyAsBytes = new byte[keySize/8];
+			
+			for(int index = 0; index < keySize/8; index++){
+				keyAsBytes[index] = new Byte(preKey[index]);
+			}
+			
 			SecretKeySpec secretKey  = new SecretKeySpec(keyAsBytes, CipherEnum.AES.toString());
 
 			Cipher cipher = Cipher.getInstance(CipherEnum.AES.toString() + "/" + blockMode.toString() + "/"
