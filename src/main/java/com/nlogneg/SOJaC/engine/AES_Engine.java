@@ -5,7 +5,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -17,10 +16,9 @@ import javax.crypto.spec.SecretKeySpec;
 import com.nlogneg.SOJaC.enums.BlockModeEnum;
 import com.nlogneg.SOJaC.enums.CipherEnum;
 import com.nlogneg.SOJaC.enums.MessageDigestEnum;
-import com.nlogneg.SOJaC.interfaces.EncryptionEngine;
 import com.nlogneg.SOJaC.objects.EncryptedResult;
 
-public class AES_Engine implements EncryptionEngine{
+public class AES_Engine extends SuperEncryptionEngine{
 
 	private static int[] KEY_SIZES = {128, 192, 256};
 
@@ -53,7 +51,7 @@ public class AES_Engine implements EncryptionEngine{
 				keySize = i;
 			}
 		}
-		
+
 		byte[] preKey = digest.digest(key.array());
 
 		byte[] keyAsBytes = new byte[keySize/8];
@@ -67,6 +65,9 @@ public class AES_Engine implements EncryptionEngine{
 		Cipher cipher = Cipher.getInstance(CipherEnum.AES.toString() + "/" + blockMode.toString() + "/"
 				+ CipherUtils.DEFAULT_PADDING);
 
+		return super.finalizeEncryption(cipher, blockMode, message, secretKey, digestMethod);
+
+		/*
 		if(BlockModeEnum.requiresIV(blockMode)){
 			SecureRandom random = SecureRandom.getInstance(CipherUtils.DEFAULT_SECURE_RANDOM);
 			byte[] IV_seed = new byte[16];
@@ -98,6 +99,7 @@ public class AES_Engine implements EncryptionEngine{
 
 			return result;
 		}
+		 */
 
 	}
 
@@ -115,7 +117,7 @@ public class AES_Engine implements EncryptionEngine{
 
 		int keySize = 0;
 
-		MessageDigestEnum digestMethod = MessageDigestEnum.SHA256;
+		MessageDigestEnum digestMethod = cipherText.getDigest();
 
 		MessageDigest digest = MessageDigest.getInstance(digestMethod.toString());
 
